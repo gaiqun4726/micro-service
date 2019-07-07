@@ -2,6 +2,7 @@ package com.gaiqun.cloud.microservice.controller;
 
 import com.gaiqun.cloud.microservice.dao.UserRepository;
 import com.gaiqun.cloud.microservice.entity.User;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +20,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public User findById(@PathVariable Long id) {
-        User findOne = userRepository.findById(id).get();
-        return findOne;
+        Optional<User> optionalUser = userRepository.findById(id);
+        return optionalUser.orElse(null);
     }
 }
