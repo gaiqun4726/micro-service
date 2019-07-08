@@ -26,13 +26,19 @@ public class MovieController {
     @Value("${user.userServiceUrl}")
     private String userServiceUrl;
 
+    @Value("${user.appId}")
+    private String userAppId;
+
     @GetMapping("/user/{id}")
     public User findById(@PathVariable Long id) {
-        return restTemplate.getForObject(String.format(userServiceUrl + "/%d", id), User.class);
+        ServiceInstance serviceInstance = discoveryClient.getInstances(userAppId).get(0);
+        String host = serviceInstance.getHost();
+        String port = String.valueOf(serviceInstance.getPort());
+        return restTemplate.getForObject(String.format("http://%s:%s/user/%d", host, port, id), User.class);
     }
 
     @GetMapping("/user-instance")
     public List<ServiceInstance> showInfo() {
-        return discoveryClient.getInstances("microservice-provider-user");
+        return discoveryClient.getInstances(userAppId);
     }
 }

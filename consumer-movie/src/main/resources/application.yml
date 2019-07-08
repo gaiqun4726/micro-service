@@ -3,6 +3,7 @@ server:
 
 user:
   userServiceUrl: http://localhost:8000/user
+  appId: microservice-provider-user
 
 eureka:
   client:
